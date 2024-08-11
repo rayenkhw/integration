@@ -1,0 +1,76 @@
+<br><br><br><br><br><br>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header text-center">
+            <h4 class="card-title">Add a Resource</h4>
+          </div>
+          <div class="card-body">
+            <form (ngSubmit)="onSubmit()" #resourceForm="ngForm">
+              <!-- Grade Selection -->
+              <div class="mb-3">
+                <label for="grade" class="form-label">Grade: </label><br>
+                <select class="form-select" id="grade" required [(ngModel)]="selectedGrade" name="grade" (change)="onGradeChange($event)">
+                  <option [value]="1">Grade 1</option>
+                  <option [value]="2">Grade 2</option>
+                  <option [value]="3">Grade 3</option>
+                  <option [value]="4">Grade 4</option>
+                  <option [value]="5">Grade 5</option>
+                </select>
+              </div>
+  
+              <!-- Spec Selection -->
+              <div class="mb-3" *ngIf="filteredSpecs.length > 0">
+                <label for="spec" class="form-label">Spec:</label><br>
+                <select class="form-select" id="spec" required [(ngModel)]="selectedSpec" name="spec" (change)="onSpecChange($event)">
+                  <option *ngFor="let spec of filteredSpecs" [value]="spec">{{ spec }}</option>
+                </select>
+              </div>
+  
+              <!-- Subject Selection -->
+              <div class="mb-3" *ngIf="filteredSubjects.length > 0">
+                <label for="subject" class="form-label">Subject:</label><br>
+                <select class="form-select" id="subject" required [(ngModel)]="idSubject" name="subject">
+                  <option *ngFor="let subject of filteredSubjects" [value]="subject.id_subject">
+                    {{ subject.name }}
+                  </option>
+                </select>
+              </div>
+  
+              <!-- Rest of the Form -->
+              <div class="mb-3">
+                <label for="title" class="form-label">Title:</label>
+                <input type="text" class="form-control" id="title" required [(ngModel)]="resource.title" name="title" />
+              </div>
+  
+              <div class="mb-3">
+                <label for="files" class="form-label">Upload Images/PDFs:</label>
+                <input type="file" class="form-control" id="files" (change)="onFileChange($event)" multiple />
+              </div>
+  
+              <!-- File Previews Section -->
+              <div class="file-previews">
+                <div *ngFor="let file of filePreviews; let i = index">
+                  <div *ngIf="file.type === 'image'" class="file-preview">
+                    <img [src]="file.src" style="width: 100px; height: auto;">
+                    <button type="button" class="btn btn-danger" (click)="deleteFile(i)">Delete</button>
+                  </div>
+                  <div *ngIf="file.type === 'pdf'" class="file-preview">
+                    <embed [src]="sanitizeUrl(file.src)" type="application/pdf">
+                    <p>{{ file.name }}</p>
+                    <button type="button" class="btn btn-danger" (click)="deleteFile(i)">Delete</button>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="text-center">
+                <button type="submit" class="btn btn-light">Add Resource</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

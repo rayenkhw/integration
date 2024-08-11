@@ -1,0 +1,98 @@
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<!-- src/app/components/ressource/ressource.component.html -->
+
+<div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Resources</h4>
+          </div>
+          <div class="card-body">
+            <!-- Filters -->
+            <div class="row">
+              <div class="col-md-4">
+                <label for="specialtyFilter">Specialty:</label>
+                <select id="specialtyFilter" class="form-control" [(ngModel)]="filters.specialty" (change)="applyFilters()">
+                  <option value="">All</option>
+                  <option *ngFor="let specialty of specialties">{{ specialty }}</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label for="statusFilter">Status:</label>
+                <select id="statusFilter" class="form-control" [(ngModel)]="filters.status" (change)="applyFilters()">
+                  <option value="">All</option>
+                  <option *ngFor="let status of statuses">{{ status }}</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label for="subjectFilter">Subject:</label>
+                <select id="subjectFilter" class="form-control" [(ngModel)]="filters.subject" (change)="applyFilters()">
+                  <option value="">All</option>
+                  <option *ngFor="let subject of subjects">{{ subject }}</option>
+                </select>
+              </div>
+            </div>
+            <br>
+            <!-- Resource Table -->
+            <div class="table-responsive">
+              <table class="table">
+                <thead class="text-primary">
+                  <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Specialty</th>
+                    <th>Status</th>
+                    <th>Uploaded By</th>
+                    <th>Approved By</th>
+                    <th>Subject</th>
+                    <th>Images</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let resource of filteredResources">
+                    <td>{{ resource.id_resource }}</td>
+                    <td>{{ resource.title }}</td>
+                    <td>{{ resource.subject.spec }}</td>
+                    <td>{{ resource.status }}</td>
+                    <td>{{ resource.upload?.firstname || '-' }} {{ resource.upload?.lastname || '-' }}</td>
+                    <td>{{ resource.approve?.firstname || '-' }} {{ resource.approve?.lastname || '-' }}</td>
+                    <td>{{ resource.subject?.name || '-' }}</td>
+                    <td>
+                      <ul>
+                        <li *ngFor="let image of resource.resourceImages">
+                          <img [src]="getImageUrl(image.id_image)" alt="Resource Image" style="width: 50px; height: 50px;">
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal for Viewing Resource -->
+  <div class="modal" [ngClass]="{'show': isModalOpen}" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <span class="close" (click)="closeModal()">&times;</span>
+      <div *ngIf="currentImage?.type.startsWith('image')">
+        <img [src]="getImageUrl(currentImage.id_image)" alt="Resource Image" style="width: 100%;">
+      </div>
+      <div *ngIf="currentImage?.type === 'application/pdf'">
+        <iframe [src]="getImageUrl(currentImage.id_image)" style="width: 100%; height: 500px;"></iframe>
+      </div>
+    </div>
+  </div>
+  

@@ -1,0 +1,52 @@
+<br>
+<br>
+
+
+
+<div class="container">
+    <h2>Subjects Management</h2>
+    <button class="btn btn-primary" (click)="newGeneralSubject()">Add General Subject</button>
+    
+    <div class="grades-container">
+      <div *ngFor="let grade of groupedSubjects | keyvalue" class="grade-card">
+        <h3>Grade {{ grade.key }}</h3>
+        <div *ngFor="let spec of grade.value | keyvalue" class="spec-section">
+          <h4>{{ spec.key }}</h4>
+          <ul class="subject-list">
+            <li *ngFor="let subject of spec.value" class="subject-item">
+              <span>{{ subject.name }} ({{ subject.spec }})</span>
+              <div class="button-group">
+                <button class="btn btn-edit" (click)="editSubject(subject)">Edit</button>
+                <button class="btn btn-delete" (click)="deleteSubject(subject.id_subject)">Delete</button>
+              </div>
+            </li>
+          </ul>
+          <button class="btn btn-add" (click)="newSubject(grade.key, spec.key)">Add Subject</button>
+        </div>
+      </div>
+    </div>
+    
+    <div *ngIf="selectedSubject" id="subjectForm" class="subject-form">
+      <h3>{{ selectedSubject.id_subject ? 'Edit' : 'Add' }} Subject</h3>
+      <form (ngSubmit)="saveSubject()">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input id="name" [(ngModel)]="selectedSubject.name" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="spec">Specialty:</label>
+          <select id="spec" [(ngModel)]="selectedSubject.spec" name="spec" required>
+            <option *ngFor="let spec of getSpecializations(selectedSubject.grade)" [value]="spec">{{ spec }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="grade">Grade:</label>
+          <input id="grade" [(ngModel)]="selectedSubject.grade" name="grade" type="number" min="1" max="5" required>
+        </div>
+        <div class="button-group">
+          <button type="submit" class="btn btn-save">Save</button>
+          <button type="button" class="btn btn-cancel" (click)="clearSelection()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
