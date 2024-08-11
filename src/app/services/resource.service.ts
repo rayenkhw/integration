@@ -13,7 +13,7 @@ export class ResourceService {
 
   constructor(private http: HttpClient) { }
 
-createResource(resource: Resource, imageFiles: File[], userId: number, idSubject: number): Observable<any> {
+createResource(resource: Resource, imageFiles: File[], userId: Number, idSubject: number): Observable<any> {
     const formData = new FormData();
     formData.append('resource', JSON.stringify(resource));
     imageFiles.forEach(file => formData.append('imageFile', file));
