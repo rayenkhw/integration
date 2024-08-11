@@ -1,0 +1,40 @@
+<br><br><br><br><br><br>
+
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+      <div class="col-md-8">
+          <div class="card">
+              <div class="card-header text-center">
+                  <h4 class="card-title">Add a Resource</h4>
+              </div>
+              <div class="card-body">
+                  <form (ngSubmit)="onSubmit()" #resourceForm="ngForm">
+                      <div class="mb-3">
+                          <label for="title" class="form-label">Title:</label>
+                          <input type="text" class="form-control" id="title" required [(ngModel)]="resource.title" name="title" />
+                      </div>
+                      
+                      <div class="mb-3">
+                          <label for="subject" class="form-label">Subject:</label>
+                          <select class="form-select" id="subject" required [(ngModel)]="idSubject" name="subject" aria-label="Default select example">
+                              <option *ngFor="let subject of subjects" [value]="subject.id_subject">
+                                  {{ subject.name }}
+                              </option>
+                          </select>
+                      </div>
+                    
+                      <div class="mb-3">
+                          <label for="images" class="form-label">Upload Images:</label>
+                          <input type="file" class="form-control" id="images" (change)="onFileChange($event)" multiple />
+                      </div>
+                      
+                      <div class="text-center">
+                          <button type="submit" class="btn btn-light">Add Resource</button>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
